@@ -186,8 +186,8 @@ end
 
 
 for c = 1 : 2
-diff_media = media_parti_rif(DB(z).database, size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2),a,b,c);
-
+   
+      diff_media = media_parti_rif(DB(z).database, size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2),a,b,c);
 %% creo feature 
 for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2)
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(1).feature =  mean(mean(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice));

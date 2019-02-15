@@ -27,12 +27,22 @@ end
 
 
 for i=1:lunghezza_rif
-   background_rif(i).backpartesx = background_rif(i).background(1:16,1:4);
+     if b==1
+       background_rif(i).backpartesx = background_rif(i).background(1:16,1:4);
+     end
+     if b == 2
+          background_rif(i).backpartesx = background_rif(i).background(1:32,1:8);
+     end
 end
 % imshow(background(4).backpartesx)
 
 for i=1:lunghezza_rif
+     if b == 1
    background_rif(i).backpartedx = background_rif(i).background(1:16,13:16);
+     end
+     if b == 2
+          background_rif(i).backpartedx = background_rif(i).background(1:32,25:32);
+     end
 end
 
 
