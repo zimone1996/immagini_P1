@@ -245,6 +245,7 @@ end
 
  %% Ciclo for per tutte le combinazioni di features (5)
  for d=1:5
+ DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).counter=0;    
  %Etichetta calcolata = minima distanza con le immagini di riferimento
  for k= 1:size(DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice,2)
      if sum(DB(z).database(b).dimensione(a).dominio(3).immagini(5).matrice(:,k)) ~= 0
