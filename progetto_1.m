@@ -9,16 +9,9 @@ for i=1:size(ImagesPath,1)
     images(i).images=imread([ImagesPath(i).folder,'/',ImagesPath(i).name]);
     % creo il path totale dell'immagine, quindi
     % sto caricando con ogni ciclo la struttura ad ogni immagine
-    % Se volessi solo l'immagine 7 scriverò images(7).images e gli dico di
-    % andare a prendere la settima immagine che ha  caricato nel DB(1).database, in
-    % questo caso la struct
-    
-    
     %creo struct con tuttii nomi delle immagini
     lista_tipologie(i).lista = extractAfter(ImagesPath(i).name,".");
 end
-
-
 %creo array di stringhe che conterrà i nomi delle 11 tipologie delle
 %immagini
 lista_stringhe = string(lista_tipologie(1).lista);
@@ -41,37 +34,31 @@ end
 
 
 
-
+%Tutte le immagini convertite in double
 %% %%%%% P1
-%% Costruire per ogni immagine una thumbnail (16x16) spazio
-% Quindi attraverso un ciclo for costruisco una thumnail per ogni immagine
-
+%% Creo immagini (16x16) spazio
 for i=1:size(ImagesPath,1)
     DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice(i).matrice=im2double(imresize(images(i).images,[16 16]));
 end
-% per prova: imshowpair(images(7).images,thumbnail.thumbnail_16x16(7).thumbnail.thumbnail_16x16,'montage')
 
-%% Costruire per ogni immagine una thumbnail (32x32) spazio
-% Quindi attraverso un ciclo for costruisco una thumnail per ogni immagine
-
+%% Creo immagini (32x32) spazio
 for i=1:size(ImagesPath,1)
     DB(1).database(2).dimensione(1).dominio(1).immagini(1).matrice(i).matrice=im2double(imresize(images(i).images,[32 32]));
 end
-% per prova: imshowpair(images(7).images,thumbnail.thumbnail_16x16(7).thumbnail.thumbnail_16x16,'montage')
 
-%% creo immagini in frequenza (DCT2) 16x16
+%%  Creo immagini (16x16) frequenza(DCT2)
 for i=1:size(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice,2)
     DB(1).database(1).dimensione(2).dominio(1).immagini(1).matrice(i).matrice = dct2(im2double(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice(i).matrice));
 end
 
-%% creo immagini in frequenza (DCT2) 32x32
+%% Creo immagini (32x32) frequenza(DCT2)
 for i=1:size(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice,2)
     DB(1).database(2).dimensione(2).dominio(1).immagini(1).matrice(i).matrice = dct2(im2double(DB(1).database(2).dimensione(1).dominio(1).immagini(1).matrice(i).matrice));
 end
 
-
+%% Ciclo for per tutti i rumori
 for z = 2 : 5 
-%% introduco rumore
+% vettore potenza del rumore
  potenza_rumore = logspace(-5,-1,5);
  
 for k=1:size(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice,2)
@@ -81,7 +68,7 @@ for k=1:size(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice,2)
       im2double(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice(k).matrice) + ...
       sqrt(potenza_rumore(z))*randn(size(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice(k).matrice));
   
-      %%  (16x16) frequeza
+      %%  (16x16) frequenza
       DB(z).database(1).dimensione(2).dominio(1).immagini(1).matrice(k).matrice =...
       im2double(DB(1).database(1).dimensione(2).dominio(1).immagini(1).matrice(k).matrice) +...
       sqrt(potenza_rumore(3))*randn(size(DB(1).database(1).dimensione(2).dominio(1).immagini(1).matrice(k).matrice));
@@ -99,15 +86,14 @@ for k=1:size(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice,2)
 end
 end
 
-
+%% Ciclo for per tutti i rumori
 for z= 1:5
-
+%% Ciclo for per tutte le dimensioni (16x16 e 32x32)
 for a = 1 : 2
+%% Ciclo for per tutte i domini (spazio e frequenza)
     for b = 1: 2
-
-
-%% creo riferimenti per entrambi i domini e i database
-
+        
+% Creo immagini riferimenti per entrambi i domini e i database
 stringa_sub = '01';
 for i=1:size(lista_stringhe,1)
     for k=1:size(ImagesPath,1)
@@ -145,7 +131,7 @@ for i=1:size(lista_stringhe,1)
 end
   
 
-%associo alle immagini della thumbnail le etichette
+% Associo alle immagini le tipologie corrispondenti
 for k=1:size(ImagesPath,1)
     for i=1:size(lista_stringhe,1)
         if strcmp(extractAfter(ImagesPath(k).name,"."),lista_stringhe(i))
@@ -154,7 +140,7 @@ for k=1:size(ImagesPath,1)
     end
 end
 
-
+% Associo alle immagini le etichette corrispondenti
 for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(1).matrice,2)
     switch DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(i).tipologia
         case 'glasses'
@@ -183,81 +169,83 @@ for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(1).matrice,2)
     end
 end
 
+%% Ciclo for utile per creare le features per le immagini di riferimento e le totali
 for c = 1 : 2
-   
-      diff_media = media_parti_rif(DB(z).database, size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2),a,b,c);
-%% creo feature 
+   % Function per le medie delle due parti
+     diff_media = media_parti_rif(DB(z).database, size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2),a,b,c);
+%Creo feature 
 for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2)
+     %media
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(1).feature =  mean(mean(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice));
+     %entropia
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(2).feature = entropy(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice);
+     %media delle parti
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(3).feature = diff_media(i);
+     % simmetria
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(4).feature = skewness(skewness(im2double(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice)));
-     DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(5).feature = DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).etichetta;
+ %    DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(5).feature = DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).etichetta;
 
 end
  end
 
 
- % tolgo le 11 di riferimento aggiugendo matrici nulle
+% tolgo le 11 immagini di riferimento aggiugendo matrici nulle e creando
+% così lista di immagini senza riferimento
 for k=1:size(DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice,2)
   trovato = 0;
   for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(2).matrice,2)
       if DB(z).database(b).dimensione(a).dominio(1).immagini(2).matrice(i).matrice == DB(1).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).matrice
           DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).matrice = zeros(size( DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).matrice,2));
-          
-        
-          
+          %Metto a zero anche le features corrispondenti agli indici delle
+          %immagini di riferimento
           DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(1).feature = 0;
           DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(2).feature = 0; 
           DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(3).feature = 0;
           DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(4).feature = 0;    
-          
           
           trovato = 1;
           indici(i)=k;
       else
           if trovato == 0
           DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).matrice = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).matrice;
-      %    DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).tipologie = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).tipologia;
+        %  DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).tipologie = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).tipologia;
         %  DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).etichetta = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).etichetta;
           end
       end
   end
 end
 
+% Calcolo le distanze tra le immagini (153) e i riferimenti
  for k= 1:size(DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice,2)
      if rank(im2double(DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).matrice)) ~= 0
          for i= 1: size(DB(z).database(1).dimensione(1).dominio(1).immagini(2).matrice,2)
-             
+             % media e entropia
                  DB(z).database(b).dimensione(a).dominio(3).immagini(1).matrice(i,k) = ...
                      pdist([DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(1).feature,  DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(2).feature;...
                      DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(1).feature, DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(2).feature]);
-                 
+             % media, entropia e  media parti  
                  DB(z).database(b).dimensione(a).dominio(3).immagini(2).matrice(i,k) = ...
                      pdist([DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(1).feature,DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(2).feature  ,DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(3).feature;...
                      DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(1).feature,DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(2).feature, DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(3).feature]);
-                 
+             % entropia e media parti  
                  DB(z).database(b).dimensione(a).dominio(3).immagini(3).matrice(i,k) = ...
                      pdist([DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(2).feature,  DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(3).feature;...
                      DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(2).feature, DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(3).feature]);
-                 
+             % media e media part  
                  DB(z).database(b).dimensione(a).dominio(3).immagini(4).matrice(i,k) = ...
                      pdist([DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(1).feature,  DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(3).feature;...
                      DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(1).feature, DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(3).feature]);
-                               
+             % simmetria e media parti               
                  DB(z).database(b).dimensione(a).dominio(3).immagini(5).matrice(i,k) = ...
                      pdist([DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(4).feature,  DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(3).feature;...
-                     DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(4).feature, DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(3).feature]);
-                 
-                
+                     DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(4).feature, DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(3).feature]);      
          end
          end
  end  
 
- 
+ %% Ciclo for per tutte le combinazioni di features (5)
  for d=1:5
-    %verità per features media e entropia
- DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).counter=0;
+ %Etichetta calcolata = minima distanza con le immagini di riferimento
  for k= 1:size(DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice,2)
      if sum(DB(z).database(b).dimensione(a).dominio(3).immagini(5).matrice(:,k)) ~= 0
         [minimo,index] = min(DB(z).database(b).dimensione(a).dominio(3).immagini(d).matrice(:,k));
@@ -266,16 +254,19 @@ end
         DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(k).etichetta_vera = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).etichetta;
           
         if DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(k).etichetta_calcolata == ...
-                DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(k).etichetta_vera
-             
+              DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(k).etichetta_vera
+          % 1 se il classificatore ha restituito risultato corretto
             DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(k).gt=1;
+          % Counter (traccia matrice di confusione)
             DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).counter =  DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).counter+1;
         else
+          % 0 se il classificatore non ha restituito risultato corretto
             DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(k).gt=0;
         end
      end
  end
  %% Accuratezza
+ % Calcolo accuratezza
  DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).accuratezza = (DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).counter / 153)*100;
 
  %% Matrice di confusione
@@ -287,13 +278,14 @@ end
  
  end
   
+% Calcolo matrice di confusione
  DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione = ...
      confusionmat(etichetta_vera,etichetta_calcolata);
-  DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione =...
-       DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione(2:12,2:12);
+ DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione =...
+     DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione(2:12,2:12);
    
 
-   diagon = diag(DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione);
+ diagon = diag(DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione);
         for i=1:size(DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione,2)
             %calcolo recall
             DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).recall(i).recall = (diagon(i)/...

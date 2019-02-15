@@ -24,8 +24,6 @@ for i=1:lunghezza_rif
 end
 %imshow(background(11).background)
 
-
-
 for i=1:lunghezza_rif
      if b==1
        background_rif(i).backpartesx = background_rif(i).background(1:16,1:4);
