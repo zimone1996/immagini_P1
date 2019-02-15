@@ -47,7 +47,7 @@ end
 % Quindi attraverso un ciclo for costruisco una thumnail per ogni immagine
 
 for i=1:size(ImagesPath,1)
-    DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice(i).matrice=imresize(images(i).images,[16 16]);
+    DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice(i).matrice=im2double(imresize(images(i).images,[16 16]));
 end
 % per prova: imshowpair(images(7).images,thumbnail.thumbnail_16x16(7).thumbnail.thumbnail_16x16,'montage')
 
@@ -55,7 +55,7 @@ end
 % Quindi attraverso un ciclo for costruisco una thumnail per ogni immagine
 
 for i=1:size(ImagesPath,1)
-    DB(1).database(2).dimensione(1).dominio(1).immagini(1).matrice(i).matrice=imresize(images(i).images,[32 32]);
+    DB(1).database(2).dimensione(1).dominio(1).immagini(1).matrice(i).matrice=im2double(imresize(images(i).images,[32 32]));
 end
 % per prova: imshowpair(images(7).images,thumbnail.thumbnail_16x16(7).thumbnail.thumbnail_16x16,'montage')
 
@@ -78,22 +78,22 @@ for k=1:size(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice,2)
      
       %%  (16x16) spazio
       DB(z).database(1).dimensione(1).dominio(1).immagini(1).matrice(k).matrice =...
-      double(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice(k).matrice) + ...
+      im2double(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice(k).matrice) + ...
       sqrt(potenza_rumore(z))*randn(size(DB(1).database(1).dimensione(1).dominio(1).immagini(1).matrice(k).matrice));
   
       %%  (16x16) frequeza
       DB(z).database(1).dimensione(2).dominio(1).immagini(1).matrice(k).matrice =...
-      double(DB(1).database(1).dimensione(2).dominio(1).immagini(1).matrice(k).matrice) +...
+      im2double(DB(1).database(1).dimensione(2).dominio(1).immagini(1).matrice(k).matrice) +...
       sqrt(potenza_rumore(3))*randn(size(DB(1).database(1).dimensione(2).dominio(1).immagini(1).matrice(k).matrice));
   
       %%  (32x32) spazio
       DB(z).database(2).dimensione(1).dominio(1).immagini(1).matrice(k).matrice=...
-      double(DB(1).database(2).dimensione(1).dominio(1).immagini(1).matrice(k).matrice) +...
+      im2double(DB(1).database(2).dimensione(1).dominio(1).immagini(1).matrice(k).matrice) +...
       sqrt(potenza_rumore(4))*randn(size(DB(1).database(2).dimensione(1).dominio(1).immagini(1).matrice(k).matrice));
   
       %%  (32x32) frequenza
       DB(z).database(2).dimensione(2).dominio(1).immagini(1).matrice(k).matrice =...
-      double(DB(1).database(2).dimensione(2).dominio(1).immagini(1).matrice(k).matrice) +...
+      im2double(DB(1).database(2).dimensione(2).dominio(1).immagini(1).matrice(k).matrice) +...
       sqrt(potenza_rumore(5))*randn(size(DB(1).database(2).dimensione(2).dominio(1).immagini(1).matrice(k).matrice));
   
 end
@@ -181,9 +181,7 @@ for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(1).matrice,2)
             DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(i).etichetta = 11;
                   
     end
-            
 end
-
 
 for c = 1 : 2
    
@@ -193,7 +191,7 @@ for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2)
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(1).feature =  mean(mean(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice));
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(2).feature = entropy(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice);
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(3).feature = diff_media(i);
-     DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(4).feature = skewness(skewness(double(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice)));
+     DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(4).feature = skewness(skewness(im2double(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice)));
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(5).feature = DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).etichetta;
 
 end
@@ -228,7 +226,7 @@ for k=1:size(DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice,2)
 end
 
  for k= 1:size(DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice,2)
-     if rank(double(DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).matrice)) ~= 0
+     if rank(im2double(DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).matrice)) ~= 0
          for i= 1: size(DB(z).database(1).dimensione(1).dominio(1).immagini(2).matrice,2)
              
                  DB(z).database(b).dimensione(a).dominio(3).immagini(1).matrice(i,k) = ...
