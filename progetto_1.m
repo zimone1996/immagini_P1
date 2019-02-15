@@ -1,8 +1,11 @@
 %% Creare il database
+% dalla directory/path personale andiamo a prendere il database Yale fornito
 clear all
 imagespath=dir('C:\Users\Simone\Desktop\uni\immagini\database per gli elaborati di Tipo 2-20190208\Yale\Yale');
 imagespath
 ImagesPath=imagespath(4:end,:);% Per eliminare i primi tre elementi che non sono immagini
+
+% creiamo una struct images in cui inserire solo le immagini(unit8) e le tipologie(char)/classi
 images=struct;
 lista_tipologie=struct;
 for i=1:size(ImagesPath,1)
@@ -12,7 +15,7 @@ for i=1:size(ImagesPath,1)
     %creo struct con tuttii nomi delle immagini
     lista_tipologie(i).lista = extractAfter(ImagesPath(i).name,".");
 end
-%creo array di stringhe che conterr‡ i nomi delle 11 tipologie delle
+%creo array di stringhe che conterr√† i nomi delle 11 tipologie delle
 %immagini
 lista_stringhe = string(lista_tipologie(1).lista);
 
@@ -190,7 +193,7 @@ end
 
 
 % tolgo le 11 immagini di riferimento aggiugendo matrici nulle e creando
-% cosÏ lista di immagini senza riferimento
+% cos√¨ lista di immagini senza riferimento
 for k=1:size(DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice,2)
   trovato = 0;
   for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(2).matrice,2)
