@@ -9,11 +9,9 @@ ImagesPath=imagespath(4:end,:);% Per eliminare i primi tre elementi che non sono
 images=struct;
 lista_tipologie=struct;
 for i=1:size(ImagesPath,1)
-    images(i).images=imread([ImagesPath(i).folder,'/',ImagesPath(i).name]);
-    % creo il path totale dell'immagine, quindi
-    % sto caricando con ogni ciclo la struttura ad ogni immagine
+    images(i).images=imread([ImagesPath(i).folder,'/',ImagesPath(i).name]); %carico l'immagine in images
     %creo struct con tuttii nomi delle immagini
-    lista_tipologie(i).lista = extractAfter(ImagesPath(i).name,".");
+    lista_tipologie(i).lista = extractAfter(ImagesPath(i).name,"."); 
 end
 %creo array di stringhe che conterrà i nomi delle 11 tipologie delle
 %immagini
