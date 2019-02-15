@@ -106,14 +106,14 @@ for a = 1 : 2
     for b = 1: 2
 
 
-%% creo riferimenti per entrambi i domini e i DB(1).database
+%% creo riferimenti per entrambi i domini e i database
 
 stringa_sub = '01';
 for i=1:size(lista_stringhe,1)
     for k=1:size(ImagesPath,1)
         if strcmp(extractAfter(ImagesPath(k).name,"."),lista_stringhe(i))&& ...
                 strcmp(extractBefore(ImagesPath(k).name,"."),['subject',stringa_sub])
-            DB(z).database(b).dimensione(a).dominio(1).immagini(2).matrice(i).matrice = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).matrice;
+            DB(z).database(b).dimensione(a).dominio(1).immagini(2).matrice(i).matrice = DB(1).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).matrice;
             DB(z).database(b).dimensione(a).dominio(1).immagini(2).matrice(i).tipologia = extractAfter(ImagesPath(k).name,".");
             DB(z).database(b).dimensione(a).dominio(1).immagini(2).matrice(i).soggetto = extractBefore(ImagesPath(k).name,".");
             DB(z).database(b).dimensione(a).dominio(1).immagini(2).matrice(i).etichetta = i;
@@ -185,15 +185,10 @@ for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(1).matrice,2)
 end
 
 
-
-
 for c = 1 : 2
 diff_media = media_parti_rif(DB(z).database, size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2),a,b,c);
 
-
-
-
-%% creo feature di riferimento
+%% creo feature 
 for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2)
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(1).feature =  mean(mean(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice));
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(2).feature = entropy(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice);
@@ -209,7 +204,7 @@ end
 for k=1:size(DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice,2)
   trovato = 0;
   for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(2).matrice,2)
-      if DB(z).database(b).dimensione(a).dominio(1).immagini(2).matrice(i).matrice == DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).matrice
+      if DB(z).database(b).dimensione(a).dominio(1).immagini(2).matrice(i).matrice == DB(1).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).matrice
           DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).matrice = zeros(size( DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).matrice,2));
           
         
@@ -225,17 +220,12 @@ for k=1:size(DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice,2)
       else
           if trovato == 0
           DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).matrice = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).matrice;
-          DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).tipologie = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).tipologia;
-          DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).etichetta = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).etichetta;
+      %    DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).tipologie = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).tipologia;
+        %  DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).etichetta = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).etichetta;
           end
       end
   end
 end
-
-
-% per ora non metto plot dei riferimenti
-
- 
 
  for k= 1:size(DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice,2)
      if rank(double(DB(z).database(b).dimensione(a).dominio(1).immagini(3).matrice(k).matrice)) ~= 0
@@ -304,8 +294,7 @@ end
   DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione =...
        DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione(2:12,2:12);
    
-   
-   
+
    diagon = diag(DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione);
         for i=1:size(DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione,2)
             %calcolo recall
