@@ -1,4 +1,5 @@
 %% Creare il database
+clear all
 imagespath=dir('C:\Users\Simone\Desktop\uni\immagini\database per gli elaborati di Tipo 2-20190208\Yale\Yale');
 imagespath
 ImagesPath=imagespath(4:end,:);% Per eliminare i primi tre elementi che non sono immagini
@@ -275,8 +276,7 @@ end
         DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(k).minimo = minimo;
         DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(k).etichetta_calcolata = index;
         DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(k).etichetta_vera = DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice(k).etichetta;
-        
-        
+          
         if DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(k).etichetta_calcolata == ...
                 DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(k).etichetta_vera
              
@@ -288,11 +288,34 @@ end
      end
  end
  %% Accuratezza
- %% Accuraezza normale
- % media e entropia
  DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).accuratezza = (DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).counter / 153)*100;
+
+ %% Matrice di confusione
+ for j = 1 : 164
+      if ~isempty(DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(j).etichetta_calcolata)
+         etichetta_calcolata(j) = DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(j).etichetta_calcolata;
+         etichetta_vera(j) = DB(z).database(b).dimensione(a).dominio(4).immagini(d).matrice(j).etichetta_vera;
+      end
+ 
+ end
+  
+ DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione = ...
+     confusionmat(etichetta_vera,etichetta_calcolata);
+  DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione =...
+       DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione(2:12,2:12);
+   
+   
+   
+   diagon = diag(DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione);
+        for i=1:size(DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione,2)
+            %calcolo recall
+            DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).recall(i).recall = (diagon(i)/...
+              sum(DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione(i,:)));
+            %calcolo precision
+            DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).precision(i).precision = diagon(i)/...
+              sum(DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione(:,i));
+        end   
  end
   end
 end
 end
-
