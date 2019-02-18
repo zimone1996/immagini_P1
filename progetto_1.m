@@ -184,9 +184,44 @@ for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2)
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(4).feature = skewness(skewness(im2double(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice)));
  %    DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(5).feature = DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).etichetta;
 
-end
+ if a==1 && z == 1 && b == 1% 16x16
+      v_16_spazio(:,i)=[DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(1).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(2).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(3).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(4).feature];
  end
+if  z == 1 && b == 1 && a==2
+      v_16_frequenza(:,i)=[DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(1).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(2).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(3).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(4).feature];
+ end      
+ 
+  
+ if  z == 1 && b == 2 && a ==1
+      v_32_spazio(:,i) = [DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(1).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(2).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(3).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(4).feature];
+  
+ end 
+  if  z == 1 && b == 2 && a ==2
+     v_32_frequenza(:,i) = [DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(1).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(2).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(3).feature;
+      DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(4).feature];
+         
+    end
+     
+end
+end
 
+% for i = 1:4
+% varianza_feature_32_spazio(i) = var(v_32_spazio(i,:));
+% varianza_feature_16_spazio(i) = var(v_16_spazio(i,:));
+% varianza_feature_32_frequenza(i) = var(v_32_frequenza(i,:));
+% varianza_feature_16_frequenza(i) = var(v_16_frequenza(i,:));
+% end
 
 % tolgo le 11 immagini di riferimento aggiugendo matrici nulle e creando
 % così lista di immagini senza riferimento
@@ -297,3 +332,55 @@ end
   end
 end
 end
+
+
+
+for z = 1 : 5 
+   %migliore simmetria e enropia
+counter_per_rumore(z) = DB(z).database(1).dimensione(2).dominio(5).immagini(5).matrice.counter;
+for j = 1 : 11
+    recall(z,j) = DB(z).database(1).dimensione(2).dominio(5).immagini(5).matrice.recall(j).recall;
+    precision(z,j) = DB(z).database(1).dimensione(2).dominio(5).immagini(5).matrice.precision(j).precision;  ;
+end
+
+end
+
+ media_count = mean(counter_per_rumore);
+ var_count = var(counter_per_rumore);
+ 
+ for j = 1 : 11
+    media_recall(j) =  mean(recall(:,j));
+    var_recall(j) = var(recall(:,j));
+    
+    media_precision(j) = mean(precision(:,j));
+    var_precision(j)= var(precision(:,j));
+ end
+ 
+ 
+ %32x32 frequenza recall
+ 
+
+for z = 1 : 5 
+   %migliore simmetria e enropia
+counter_per_rumore_32(z) = DB(z).database(2).dimensione(2).dominio(5).immagini(5).matrice.counter;
+for j = 1 : 11
+    recall_32(z,j) = DB(z).database(2).dimensione(2).dominio(5).immagini(5).matrice.recall(j).recall;
+    precision_32(z,j) = DB(z).database(2).dimensione(2).dominio(5).immagini(5).matrice.precision(j).precision;  ;
+end
+
+end
+
+ media_count_32 = mean(counter_per_rumore_32);
+ var_count_32 = var(counter_per_rumore_32);
+ 
+ for j = 1 : 11
+    media_recall_32(j) =  mean(recall_32(:,j));
+    var_recall_32(j) = var(recall_32(:,j));
+    
+    media_precision_32(j) = mean(precision_32(:,j));
+    var_precision_32(j)= var(precision_32(:,j));
+ end
+ 
+ 
+ 
+ 
