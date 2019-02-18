@@ -1,19 +1,17 @@
 %% Creare il database
-% dalla directory/path personale andiamo a prendere il database Yale fornito
-clear all
 imagespath=dir('C:\Users\Simone\Desktop\uni\immagini\database per gli elaborati di Tipo 2-20190208\Yale\Yale');
 imagespath
 ImagesPath=imagespath(4:end,:);% Per eliminare i primi tre elementi che non sono immagini
-
-% creiamo una struct images in cui inserire solo le immagini(unit8) e le tipologie(char)/classi
 images=struct;
 lista_tipologie=struct;
 for i=1:size(ImagesPath,1)
-    images(i).images=imread([ImagesPath(i).folder,'/',ImagesPath(i).name]); %carico l'immagine in images
+    images(i).images=imread([ImagesPath(i).folder,'/',ImagesPath(i).name]);
+    % creo il path totale dell'immagine, quindi
+    % sto caricando con ogni ciclo la struttura ad ogni immagine
     %creo struct con tuttii nomi delle immagini
-    lista_tipologie(i).lista = extractAfter(ImagesPath(i).name,"."); 
+    lista_tipologie(i).lista = extractAfter(ImagesPath(i).name,".");
 end
-%creo array di stringhe che conterr√† i nomi delle 11 tipologie delle
+%creo array di stringhe che conterr‡ i nomi delle 11 tipologie delle
 %immagini
 lista_stringhe = string(lista_tipologie(1).lista);
 
@@ -89,9 +87,9 @@ end
 
 %% Ciclo for per tutti i rumori
 for z= 1:5
-%% Ciclo for per tutte le dimensioni (16x16 e 32x32)
-for a = 1 : 2
 %% Ciclo for per tutte i domini (spazio e frequenza)
+for a = 1 : 2
+%% Ciclo for per tutte le dimensioni (16x16 e 32x32)
     for b = 1: 2
         
 % Creo immagini riferimenti per entrambi i domini e i database
@@ -191,7 +189,7 @@ end
 
 
 % tolgo le 11 immagini di riferimento aggiugendo matrici nulle e creando
-% cos√¨ lista di immagini senza riferimento
+% cosÏ lista di immagini senza riferimento
 for k=1:size(DB(z).database(b).dimensione(a).dominio(1).immagini(1).matrice,2)
   trovato = 0;
   for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(2).matrice,2)
@@ -227,7 +225,7 @@ end
              % media, entropia e  media parti  
                  DB(z).database(b).dimensione(a).dominio(3).immagini(2).matrice(i,k) = ...
                      pdist([DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(1).feature,DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(2).feature  ,DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(3).feature;...
-                     DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(1).feature,DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(2).feature, DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(3).feature]);
+                     DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(1).feature,DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(2).feature, DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(3).feature]);
              % entropia e media parti  
                  DB(z).database(b).dimensione(a).dominio(3).immagini(3).matrice(i,k) = ...
                      pdist([DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(2).feature,  DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(3).feature;...
@@ -286,7 +284,6 @@ end
  DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione =...
      DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione(2:12,2:12);
    
-
  diagon = diag(DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione);
         for i=1:size(DB(z).database(b).dimensione(a).dominio(5).immagini(d).matrice(1).matrice_confusione,2)
             %calcolo recall
