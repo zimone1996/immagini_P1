@@ -337,6 +337,11 @@ for i= 1 : 4
 end
     
 
+%%istogramma varianza features
+figure
+bar([varianza_16_spazio; varianza_32_spazio; varianza_16_frequenza; varianza_32_frequenza]);
+xticklabels({'16x16 spazio','32x32 spazio','16x16 frequenza','32x32 frequenza'});
+legend({'Media','Entropia','Media Parti','Asimmetria'});
 
 
 %% Risultati P1
@@ -618,3 +623,6 @@ xticks(0:1:12)
 xticklabels({' ','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy',...
     'surprised','wink','centerlight',' '})
 xtickangle(45)
+
+
+
