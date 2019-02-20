@@ -184,6 +184,7 @@ for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2)
      DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(4).feature = skewness(skewness(im2double(DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).matrice)));
  %    DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(5).feature = DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).etichetta;
 
+ %vettore features 
  if a==1 && z == 1 && b == 1% 16x16
       v_16_spazio(:,i)=[DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(1).feature;
       DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(2).feature;
@@ -216,12 +217,6 @@ if  z == 1 && b == 1 && a==2
 end
 end
 
-% for i = 1:4
-% varianza_feature_32_spazio(i) = var(v_32_spazio(i,:));
-% varianza_feature_16_spazio(i) = var(v_16_spazio(i,:));
-% varianza_feature_32_frequenza(i) = var(v_32_frequenza(i,:));
-% varianza_feature_16_frequenza(i) = var(v_16_frequenza(i,:));
-% end
 
 % tolgo le 11 immagini di riferimento aggiugendo matrici nulle e creando
 % così lista di immagini senza riferimento
@@ -269,10 +264,10 @@ end
                  DB(z).database(b).dimensione(a).dominio(3).immagini(4).matrice(i,k) = ...
                      pdist([DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(1).feature,  DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(3).feature;...
                      DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(1).feature, DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(3).feature]);
-             % simmetria e media parti               
+             % simmetria e entropia               
                  DB(z).database(b).dimensione(a).dominio(3).immagini(5).matrice(i,k) = ...
-                     pdist([DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(4).feature,  DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(3).feature;...
-                     DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(4).feature, DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(3).feature]);      
+                     pdist([DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(4).feature,  DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(k).tipo(2).feature;...
+                     DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(4).feature, DB(z).database(b).dimensione(a).dominio(2).immagini(2).matrice(i).tipo(2).feature]);      
          end
          end
  end  
@@ -332,55 +327,287 @@ end
   end
 end
 end
+%% Risultati P1
+%%                             16x16 SPAZIO entropia e media parti
+%% counter e accuratezza
+for z=1:5
+    %in questa maniera prendo il counter di quella coppia di feature (
+    %entropia e media_parti) tutti i rumori 
+    vettore_counter(z) = DB(z).database(1).dimensione(1).dominio(5).immagini(3).matrice.counter;
+    vettore_accuracy(z) = DB(z).database(1).dimensione(1).dominio(5).immagini(3).matrice.accuratezza;
+end
+
+media_counter = mean(vettore_counter);
+media_accuracy = mean(vettore_accuracy);
+std_counter = std(vettore_counter);
+std_accuracy = std(vettore_accuracy);
+
+%% recall e precision
+%creiamo matrice con tutte le recall
+for z= 1:5
+    for i= 1:11
+       matrice_recall(i,z) = DB(z).database(1).dimensione(1).dominio(5).immagini(3).matrice.recall(i).recall;
+       matrice_precision(i,z) = DB(z).database(1).dimensione(1).dominio(5).immagini(3).matrice.precision(i).precision;
+    end
+end
+
+media_recall = mean(matrice_recall,2)*100;
+media_precision = mean(matrice_precision,2)*100;
+std_recall = std(matrice_recall,0,2)*100;
+std_precision = std(matrice_precision,0,2)*100;
 
 
+
+
+%%                             32x32 SPAZIO entropia e media parti
+%% counter e accuratezza
+for z=1:5
+    %in questa maniera prendo il counter di quella coppia di feature (
+    %entropia e media_parti) tutti i rumori 
+    vettore_counter_32s(z) = DB(z).database(2).dimensione(1).dominio(5).immagini(3).matrice.counter;
+    vettore_accuracy_32s(z) = DB(z).database(2).dimensione(1).dominio(5).immagini(3).matrice.accuratezza;
+end
+
+media_counter_32s = mean(vettore_counter_32s)*100;
+media_accuracy_32s = mean(vettore_accuracy_32s)*100;
+std_counter_32s = std(vettore_counter_32s)*100;
+std_accuracy_32s = std(vettore_accuracy_32s)*100;
+
+%% recall e precision
+%creiamo matrice con tutte le recall
+for z= 1:5
+    for i= 1:11
+       matrice_recall_32s(i,z) = DB(z).database(2).dimensione(1).dominio(5).immagini(3).matrice.recall(i).recall;
+       matrice_precision_32s(i,z) = DB(z).database(2).dimensione(1).dominio(5).immagini(3).matrice.precision(i).precision;
+    end
+end
+
+media_recall_32s = mean(matrice_recall_32s,2)*100;
+media_precision_32s = mean(matrice_precision_32s,2)*100;
+std_recall_32s = std(matrice_recall_32s,0,2)*100;
+std_precision_32s = std(matrice_precision_32s,0,2)*100;
+
+
+
+%%                            16x16 FREQUENZA Simmetria e Entropia
+%% counter e accuratezza recall e precision
+for z = 1 : 5 
+   %migliore simmetria e entropia
+    vettore_counter_16f(z) = DB(z).database(1).dimensione(2).dominio(5).immagini(5).matrice.counter;
+    vettore_accuracy_16f(z) = DB(z).database(1).dimensione(2).dominio(5).immagini(5).matrice.accuratezza;
+    for j = 1 : 11
+        matrice_recall_16f(j,z) = DB(z).database(1).dimensione(2).dominio(5).immagini(5).matrice.recall(j).recall;
+        matrice_precision_16f(j,z) = DB(z).database(1).dimensione(2).dominio(5).immagini(5).matrice.precision(j).precision;
+    end
+end
+
+media_accuracy_16f = mean(vettore_accuracy_16f)*100;
+media_counter_16f = mean(vettore_counter_16f)*100;
+std_counter_16f = std(vettore_counter_16f)*100;
+std_accuracy_16f = std(vettore_accuracy_16f)*100;
+
+ media_recall_16f =  mean(matrice_recall_16f,2)*100;
+ std_recall_16f = std(matrice_recall_16f,0,2)*100;    
+ media_precision_16f = mean(matrice_precision_16f,2)*100;
+ std_precision_16f= std(matrice_precision_16f,0,2)*100;
+
+
+ 
+%%                            32x32 FREQUENZA Simmetria e Entropia
 
 for z = 1 : 5 
-   %migliore simmetria e enropia
-counter_per_rumore(z) = DB(z).database(1).dimensione(2).dominio(5).immagini(5).matrice.counter;
-for j = 1 : 11
-    recall(z,j) = DB(z).database(1).dimensione(2).dominio(5).immagini(5).matrice.recall(j).recall;
-    precision(z,j) = DB(z).database(1).dimensione(2).dominio(5).immagini(5).matrice.precision(j).precision;  ;
+   %migliore simmetria e entropia
+    vettore_counter_32f(z) = DB(z).database(2).dimensione(2).dominio(5).immagini(5).matrice.counter;
+    vettore_accuracy_32f(z) = DB(z).database(2).dimensione(2).dominio(5).immagini(5).matrice.accuratezza;
+    for j = 1 : 11
+        matrice_recall_32f(j,z) = DB(z).database(2).dimensione(2).dominio(5).immagini(5).matrice.recall(j).recall;
+        matrice_precision_32f(j,z) = DB(z).database(2).dimensione(2).dominio(5).immagini(5).matrice.precision(j).precision;
+    end
 end
 
-end
+media_accuracy_32f = mean(vettore_accuracy_32f)*100;
+media_counter_32f = mean(vettore_counter_32f)*100;
+std_counter_32f = std(vettore_counter_32f)*100;
+std_accuracy_32f = std(vettore_accuracy_32f)*100;
 
- media_count = mean(counter_per_rumore);
- var_count = var(counter_per_rumore);
- 
- for j = 1 : 11
-    media_recall(j) =  mean(recall(:,j));
-    var_recall(j) = var(recall(:,j));
+media_recall_32f =  mean(matrice_recall_32f,2)*100;
+std_recall_32f = std(matrice_recall_32f,0,2)*100;    
+media_precision_32f = mean(matrice_precision_32f,2)*100;
+std_precision_32f= std(matrice_precision_32f,0,2)*100;
+
+
     
-    media_precision(j) = mean(precision(:,j));
-    var_precision(j)= var(precision(:,j));
- end
- 
- 
- %32x32 frequenza recall
- 
 
-for z = 1 : 5 
-   %migliore simmetria e enropia
-counter_per_rumore_32(z) = DB(z).database(2).dimensione(2).dominio(5).immagini(5).matrice.counter;
-for j = 1 : 11
-    recall_32(z,j) = DB(z).database(2).dimensione(2).dominio(5).immagini(5).matrice.recall(j).recall;
-    precision_32(z,j) = DB(z).database(2).dimensione(2).dominio(5).immagini(5).matrice.precision(j).precision;  ;
-end
 
-end
 
- media_count_32 = mean(counter_per_rumore_32);
- var_count_32 = var(counter_per_rumore_32);
- 
- for j = 1 : 11
-    media_recall_32(j) =  mean(recall_32(:,j));
-    var_recall_32(j) = var(recall_32(:,j));
-    
-    media_precision_32(j) = mean(precision_32(:,j));
-    var_precision_32(j)= var(precision_32(:,j));
- end
- 
- 
- 
- 
+%grafici
+% counter
+figure
+x=1:1:4;
+y=[media_counter media_counter_32s media_counter_16f media_counter_32f];
+err = [std_counter std_counter_32s std_counter_16f std_counter_32f];
+scatter(x,y,'o','b','LineWidth', 2)
+hold on
+errorbar(x,y,err,'.r')
+grid on
+xlim([0 5])
+ylim([0 164])
+title('N° etichette corrette per feature migliore')
+ylabel('N° di etichette stimate correttamente')
+legend({'Media','deviazione standard'})
+xticks(0:1:5)
+yticks(0:10:164)
+xticklabels({' ','16x16 spazio e_ mp','32x32 spazio e_ mp','16x16 frequenza s_ e','32x32 frequenza s_ e'})
+xtickangle(45)
+
+%accuracy
+figure
+x=1:1:4 ;
+y=[media_accuracy media_accuracy_32s media_accuracy_16f media_accuracy_32f ];
+err1 = [std_accuracy std_accuracy_32s std_accuracy_16f std_accuracy_32f];
+scatter(x,y,'o','b','LineWidth', 2)
+hold on
+errorbar(x,y,err1,'.r')
+grid on
+xlim([0 5])
+ylim([0 100])
+title('Accuracy della feature migliore')
+ylabel('Accuratezza [%]')
+legend({'Media','deviazione standard'})
+xticks(0:1:5)
+yticks(0:10:100)
+xticklabels({' ','16x16 spazio e_ mp','32x32 spazio e_ mp','16x16 frequenza s_ e', '32x32 frequenza s_ e' })
+xtickangle(45)
+
+
+%% 16x16 SPAZIO entropia e media parti
+%recall per tutte e 11
+figure
+x=1:1:11;
+scatter(x,media_recall,'o','b','LineWidth', 2)
+hold on
+errorbar(x,media_recall,std_recall,'.r')
+grid on
+legend({'Media','deviazione standard'})
+xlim([0 12])
+title({'Recall della feature entropia e media parti';'16x16 spazio'})
+ylabel('Recall')
+xticks(0:1:12)
+xticklabels({' ','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy',...
+    'surprised','wink','centerlight',' '})
+xtickangle(45)
+
+%precision per tutte e 11
+figure
+x=1:1:11;
+scatter(x,media_precision,'o','b','LineWidth', 2)
+hold on
+errorbar(x,media_precision,std_precision,'.r')
+grid on
+legend({'Media','deviazione standard'})
+xlim([0 12])
+title({'Precision della feature entropia e media parti';'16x16 spazio'})
+ylabel('Precision')
+xticks(0:1:12)
+xticklabels({' ','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy',...
+    'surprised','wink','centerlight',' '})
+xtickangle(45)
+
+%% 32x32 SPAZIO entropia e media parti
+%recall per tutte e 11
+figure
+x=1:1:11;
+scatter(x,media_recall_32s,'o','b','LineWidth', 2)
+hold on
+errorbar(x,media_recall_32s,std_recall_32s,'.r')
+grid on
+legend({'Media','deviazione standard'})
+xlim([0 12])
+title({'Recall della feature entropia e media parti';'32x32 spazio'})
+ylabel('Recall')
+xticks(0:1:12)
+xticklabels({' ','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy',...
+    'surprised','wink','centerlight',' '})
+xtickangle(45)
+
+%precision per tutte e 11
+figure
+x=1:1:11;
+scatter(x,media_precision_32s,'o','b','LineWidth', 2)
+hold on
+errorbar(x,media_precision_32s,std_precision_32s,'.r')
+grid on
+legend({'Media','deviazione standard'})
+xlim([0 12])
+title({'Precision della feature entropia e media parti';'32x32 spazio'})
+ylabel('Precision')
+xticks(0:1:12)
+xticklabels({' ','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy',...
+    'surprised','wink','centerlight',' '})
+xtickangle(45)
+
+%% 16x16 FREQUENZA Simmetria e Entropia
+%recall per tutte e 11
+figure
+x=1:1:11;
+scatter(x,media_recall_16f,'o','b','LineWidth', 2)
+hold on
+errorbar(x,media_recall_16f,std_recall_16f,'.r')
+grid on
+legend({'Media','deviazione standard'})
+xlim([0 12])
+title({'Recall della feature simmetria e entropia';'16x16 frequenza'})
+ylabel('Recall')
+xticks(0:1:12)
+xticklabels({' ','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy',...
+    'surprised','wink','centerlight',' '})
+xtickangle(45)
+
+figure
+%precision per tutte e 11
+x=1:1:11;
+scatter(x,media_precision_16f,'o','b','LineWidth', 2)
+hold on
+errorbar(x,media_precision_16f,std_precision_16f,'.r')
+grid on
+legend({'Media','deviazione standard'})
+xlim([0 12])
+title({'Precision della feature simmetria e entropia';'16x16 frequenza'})
+ylabel('Precision')
+xticks(0:1:12)
+xticklabels({' ','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy',...
+    'surprised','wink','centerlight',' '})
+xtickangle(45)
+
+%% 32x32 FREQUENZA Simmetria e Entropia
+%recall per tutte e 11
+figure
+x=1:1:11;
+scatter(x,media_recall_32f,'o','b','LineWidth', 2)
+hold on
+errorbar(x,media_recall_32f,std_recall_32f,'.r')
+grid on
+legend({'Media','deviazione standard'})
+xlim([0 12])
+title({'Recall della feature simmetria e entropia';'32x32 frequenza'})
+ylabel('Recall')
+xticks(0:1:12)
+xticklabels({' ','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy',...
+    'surprised','wink','centerlight',' '})
+xtickangle(45)
+
+%precision per tutte e 11
+figure
+x=1:1:11;
+scatter(x,media_precision_32f,'o','b','LineWidth', 2)
+hold on
+errorbar(x,media_precision_32f,std_precision_32f,'.r')
+grid on
+legend({'Media','deviazione standard'})
+xlim([0 12])
+title({'Precision della feature simmetria e entropia';'32x32 frequenza'})
+ylabel('Precision')
+xticks(0:1:12)
+xticklabels({' ','glasses','happy','leftlight','noglasses','normal','rightlight','sad','sleepy',...
+    'surprised','wink','centerlight',' '})
+xtickangle(45)
