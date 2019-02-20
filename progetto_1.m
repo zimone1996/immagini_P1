@@ -368,6 +368,17 @@ for z= 1:5
     end
 end
 
+% for z= 1:5
+%     for i= 1:11
+%         if isnan(matrice_recall(i,z))
+%        matrice_recall(i,z) = 0;
+%         end
+%        if isnan(matrice_precision(i,z))
+%        matrice_precision(i,z) = 0;
+%        end
+%     end
+% end
+
 media_recall = mean(matrice_recall,2)*100;
 media_precision = mean(matrice_precision,2)*100;
 std_recall = std(matrice_recall,0,2)*100;
