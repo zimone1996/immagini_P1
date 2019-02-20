@@ -185,13 +185,13 @@ for i=1:size(DB(z).database(1).dimensione(1).dominio(1).immagini(c).matrice,2)
  %    DB(z).database(b).dimensione(a).dominio(2).immagini(c).matrice(i).tipo(5).feature = DB(z).database(b).dimensione(a).dominio(1).immagini(c).matrice(i).etichetta;
 
  %vettore features 
- if a==1 && z == 1 && b == 1% 16x16
+ if a==1 && z == 1 && b == 1% 16x16 spazio
       v_16_spazio(:,i)=[DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(1).feature;
       DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(2).feature;
       DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(3).feature;
       DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(4).feature];
  end
-if  z == 1 && b == 1 && a==2
+if  z == 1 && b == 1 && a==2% 16x16 frequenza
       v_16_frequenza(:,i)=[DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(1).feature;
       DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(2).feature;
       DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(3).feature;
@@ -199,14 +199,14 @@ if  z == 1 && b == 1 && a==2
  end      
  
   
- if  z == 1 && b == 2 && a ==1
+ if  z == 1 && b == 2 && a ==1% 32x32 spazio
       v_32_spazio(:,i) = [DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(1).feature;
       DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(2).feature;
       DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(3).feature;
       DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(4).feature];
   
  end 
-  if  z == 1 && b == 2 && a ==2
+  if  z == 1 && b == 2 && a ==2% 32x32 frequenza
      v_32_frequenza(:,i) = [DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(1).feature;
       DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(2).feature;
       DB(z).database(b).dimensione(a).dominio(2).immagini(1).matrice(i).tipo(3).feature;
@@ -353,14 +353,14 @@ for z=1:5
     vettore_counter(z) = DB(z).database(1).dimensione(1).dominio(5).immagini(3).matrice.counter;
     vettore_accuracy(z) = DB(z).database(1).dimensione(1).dominio(5).immagini(3).matrice.accuratezza;
 end
-
-media_counter = mean(vettore_counter);
+%calcolo media e dev standard di counter e accuratezza
+media_counter = mean(vettore_counter); 
 media_accuracy = mean(vettore_accuracy);
 std_counter = std(vettore_counter);
 std_accuracy = std(vettore_accuracy);
 
 %% recall e precision
-%creiamo matrice con tutte le recall
+%creiamo matrice con tutte le recall e precision
 for z= 1:5
     for i= 1:11
        matrice_recall(i,z) = DB(z).database(1).dimensione(1).dominio(5).immagini(3).matrice.recall(i).recall;
@@ -368,17 +368,7 @@ for z= 1:5
     end
 end
 
-% for z= 1:5
-%     for i= 1:11
-%         if isnan(matrice_recall(i,z))
-%        matrice_recall(i,z) = 0;
-%         end
-%        if isnan(matrice_precision(i,z))
-%        matrice_precision(i,z) = 0;
-%        end
-%     end
-% end
-
+%calcolo media e dev standard di recall e precisione
 media_recall = mean(matrice_recall,2)*100;
 media_precision = mean(matrice_precision,2)*100;
 std_recall = std(matrice_recall,0,2)*100;
@@ -396,6 +386,7 @@ for z=1:5
     vettore_accuracy_32s(z) = DB(z).database(2).dimensione(1).dominio(5).immagini(3).matrice.accuratezza;
 end
 
+%calcolo media e dev standard di counter e accuratezza
 media_counter_32s = mean(vettore_counter_32s);
 media_accuracy_32s = mean(vettore_accuracy_32s);
 std_counter_32s = std(vettore_counter_32s);
@@ -410,6 +401,7 @@ for z= 1:5
     end
 end
 
+%calcolo media e dev standard di recall e precisione
 media_recall_32s = mean(matrice_recall_32s,2)*100;
 media_precision_32s = mean(matrice_precision_32s,2)*100;
 std_recall_32s = std(matrice_recall_32s,0,2)*100;
@@ -429,11 +421,13 @@ for z = 1 : 5
     end
 end
 
-media_accuracy_16f = mean(vettore_accuracy_16f);
-media_counter_16f = mean(vettore_counter_16f);
-std_counter_16f = std(vettore_counter_16f);
-std_accuracy_16f = std(vettore_accuracy_16f);
+%calcolo media e dev standard di counter e accuratezza
+ media_accuracy_16f = mean(vettore_accuracy_16f);
+ media_counter_16f = mean(vettore_counter_16f);
+ std_counter_16f = std(vettore_counter_16f);
+ std_accuracy_16f = std(vettore_accuracy_16f);
 
+ %calcolo media e dev standard di recall e precisione
  media_recall_16f =  mean(matrice_recall_16f,2)*100;
  std_recall_16f = std(matrice_recall_16f,0,2)*100;    
  media_precision_16f = mean(matrice_precision_16f,2)*100;
@@ -453,17 +447,19 @@ for z = 1 : 5
     end
 end
 
+%calcolo media e dev standard di counter e accuratezza
 media_accuracy_32f = mean(vettore_accuracy_32f);
 media_counter_32f = mean(vettore_counter_32f);
 std_counter_32f = std(vettore_counter_32f);
 std_accuracy_32f = std(vettore_accuracy_32f);
 
-media_recall_32f =  mean(matrice_recall_32f,2)*100;
+%calcolo media e dev standard di recall e precisione
+media_recall_32f =  mean(matrice_recall_32f,2)*100
 std_recall_32f = std(matrice_recall_32f,0,2)*100;    
 media_precision_32f = mean(matrice_precision_32f,2)*100;
 std_precision_32f= std(matrice_precision_32f,0,2)*100;
 
-%grafici
+%% grafici
 % counter
 figure
 x=1:1:4;
