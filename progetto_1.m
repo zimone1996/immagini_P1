@@ -385,10 +385,10 @@ for z=1:5
     vettore_accuracy_32s(z) = DB(z).database(2).dimensione(1).dominio(5).immagini(3).matrice.accuratezza;
 end
 
-media_counter_32s = mean(vettore_counter_32s)*100;
-media_accuracy_32s = mean(vettore_accuracy_32s)*100;
-std_counter_32s = std(vettore_counter_32s)*100;
-std_accuracy_32s = std(vettore_accuracy_32s)*100;
+media_counter_32s = mean(vettore_counter_32s);
+media_accuracy_32s = mean(vettore_accuracy_32s);
+std_counter_32s = std(vettore_counter_32s);
+std_accuracy_32s = std(vettore_accuracy_32s);
 
 %% recall e precision
 %creiamo matrice con tutte le recall
@@ -418,10 +418,10 @@ for z = 1 : 5
     end
 end
 
-media_accuracy_16f = mean(vettore_accuracy_16f)*100;
-media_counter_16f = mean(vettore_counter_16f)*100;
-std_counter_16f = std(vettore_counter_16f)*100;
-std_accuracy_16f = std(vettore_accuracy_16f)*100;
+media_accuracy_16f = mean(vettore_accuracy_16f);
+media_counter_16f = mean(vettore_counter_16f);
+std_counter_16f = std(vettore_counter_16f);
+std_accuracy_16f = std(vettore_accuracy_16f);
 
  media_recall_16f =  mean(matrice_recall_16f,2)*100;
  std_recall_16f = std(matrice_recall_16f,0,2)*100;    
@@ -442,10 +442,10 @@ for z = 1 : 5
     end
 end
 
-media_accuracy_32f = mean(vettore_accuracy_32f)*100;
-media_counter_32f = mean(vettore_counter_32f)*100;
-std_counter_32f = std(vettore_counter_32f)*100;
-std_accuracy_32f = std(vettore_accuracy_32f)*100;
+media_accuracy_32f = mean(vettore_accuracy_32f);
+media_counter_32f = mean(vettore_counter_32f);
+std_counter_32f = std(vettore_counter_32f);
+std_accuracy_32f = std(vettore_accuracy_32f);
 
 media_recall_32f =  mean(matrice_recall_32f,2)*100;
 std_recall_32f = std(matrice_recall_32f,0,2)*100;    
@@ -486,7 +486,7 @@ ylim([0 100])
 title('Accuracy della feature migliore')
 ylabel('Accuratezza [%]')
 legend({'Media','deviazione standard'})
-xticks(0:1:5)
+xticks(0:1:4)
 yticks(0:10:100)
 xticklabels({' ','16x16 spazio e_ mp','32x32 spazio e_ mp','16x16 frequenza s_ e', '32x32 frequenza s_ e' })
 xtickangle(45)
