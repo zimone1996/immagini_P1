@@ -327,6 +327,18 @@ end
   end
 end
 end
+
+%calcolo vaianza delle features
+for i= 1 : 4
+    varianza_16_spazio(i) = var(v_16_spazio(i,:));
+    varianza_16_frequenza(i) = var(v_16_frequenza(i,:));
+    varianza_32_spazio(i) = var(v_32_spazio(i,:));
+    varianza_32_frequenza(i) = var(v_32_frequenza(i,:));
+end
+    
+
+
+
 %% Risultati P1
 %%                             16x16 SPAZIO entropia e media parti
 %% counter e accuratezza
@@ -434,11 +446,6 @@ media_recall_32f =  mean(matrice_recall_32f,2)*100;
 std_recall_32f = std(matrice_recall_32f,0,2)*100;    
 media_precision_32f = mean(matrice_precision_32f,2)*100;
 std_precision_32f= std(matrice_precision_32f,0,2)*100;
-
-
-    
-
-
 
 %grafici
 % counter
