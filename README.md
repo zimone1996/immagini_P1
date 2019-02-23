@@ -13,5 +13,16 @@ Valutare le prestazioni del sistema con la logica del leave one out.
 
 Valutare la sensibilità delle prestazioni del sistema per diverse dimensioni di thumbnail (16x16, 32x32) e al crescere della potenza di un rumore gaussiano bianco aggiunto alle immagini.
 
+Membri del gruppo 9:
+
+Simone Guarino
+
+Leonardo Loffredo
+
+Francesco Salvi
+
+Camilla Mussoni
+
+Cecilia Provenzale
 
 
