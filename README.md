@@ -15,14 +15,3 @@ Valutare la sensibilità delle prestazioni del sistema per diverse dimensioni di
 
 Membri del gruppo 9:
 
-Simone Guarino
-
-Leonardo Loffredo
-
-Francesco Salvi
-
-Camilla Mussoni
-
-Cecilia Provenzale
-
-
